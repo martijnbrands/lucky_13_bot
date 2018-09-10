@@ -12,6 +12,13 @@ const readline = require('readline')
 const colors = require('colors')
 const CFonts = require('cfonts')
 
+google.resultsPerPage = 25
+google.lang = 'nl'
+let nextCounter = 0
+
+pointsAnswerOne = ""
+pointsAnswerTwo = ""
+
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 process.stdin.on('keypress', (str, key) => {
@@ -34,19 +41,19 @@ console.log('')
 console.log(colors.yellow('Druk op de s toets om te beginnen. Druk op q om de bot te verlaten.'))
 
 function bot(){
-    screenshot("screenshot.jpg", function(error, complete) {
+    screenshot("screenshot.png", {width: 1600}, function(error, complete) {
         if(error)
             console.log("Screenshot failed", error);
         else
             console.log("Screenshot succeeded");
-            gm('./screenshot.jpg')
+            gm('./screenshot.png')
             // Width, Height, X-offset, Y-offset
             .crop(910, 420, 90, 800)
             .sepia()
-            .write('./answerOne.jpg', function (err) {
+            .write('./answerOne.png', function (err) {
             if (!err) 
                 console.log('Answer one cropping done');
-                tesseract.process(__dirname + '/answerOne.jpg',function(err, text) {
+                tesseract.process(__dirname + '/answerOne.png',function(err, text) {
                     if(err) {
                         console.error(err);
                     } else {
@@ -55,14 +62,14 @@ function bot(){
                     }
                 }, 'nld', 6);
             });
-            gm('./screenshot.jpg')
+            gm('./screenshot.png')
             // Width, Height, X-offset, Y-offset
             .crop(910, 420, 90, 1215)
             .sepia()
-            .write('./answerTwo.jpg', function (err) {
+            .write('./answerTwo.png', function (err) {
             if (!err) 
                 console.log('Answer one cropping done');
-                tesseract.process(__dirname + '/answerTwo.jpg',function(err, text) {
+                tesseract.process(__dirname + '/answerTwo.png',function(err, text) {
                     if(err) {
                         console.error(err);
                     } else {
@@ -71,14 +78,14 @@ function bot(){
                     }
                 }, 'nld', 6);
             });
-            gm('./screenshot.jpg')
+            gm('./screenshot.png')
             // Width, Height, X-offset, Y-offset
             .crop(1300, 650, 0, 150)
             .sepia()
-            .write('./question.jpg', function (err) {
+            .write('./question.png', function (err) {
             if (!err) 
                 console.log('Question cropping done');
-                tesseract.process(__dirname + '/question.jpg',function(err, text) {
+                tesseract.process(__dirname + '/question.png',function(err, text) {
                     if(err) {
                         console.error(err);
                     } else {
@@ -96,10 +103,13 @@ function bot(){
                                         request(link.link, function (error, response, body) {
                                             if (!error) {
                                                 const $ = cheerio.load(body);
-                                                pointsAnswer2 = 0;
                                                 if($('body').text().toLowerCase().indexOf(answerOne.toLowerCase()) != -1) {
+                                                    pointsAnswerOne = countInstances($('body').text().toLowerCase(), "dua lipa")
+                                                    console.log(pointsAnswerOne)
                                                 }
                                                 if($('body').text().toLowerCase().indexOf(answerTwo.toLowerCase()) != -1) {
+                                                    pointsAnswerTwo = countInstances($('body').text().toLowerCase(), "bebe rexha")
+                                                    console.log(pointsAnswerTwo)
                                                 }
                                                 else {
                                                     console.log("Error: " + error);
@@ -119,5 +129,10 @@ function bot(){
                     }
                 }, 'nld', 6);
             });
+           
     });
+}
+
+function countInstances(string, word){
+    return string.split(word).length -1;
 }
