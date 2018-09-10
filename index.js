@@ -11,3 +11,12 @@ const fs = require('fs')
 const readline = require('readline')
 const colors = require('colors')
 const CFonts = require('cfonts')
+
+console.log(colors.green("__________________________________________________________________________________"))
+CFonts.say('LUCKY 13 bot', {
+    font: 'simple',
+    colors: ['green'],
+});
+console.log(colors.green("__________________________________________________________________________________"))
+console.log('')
+console.log(colors.yellow('Druk op de s toets om te beginnen. Druk op q om de bot te verlaten.'))
