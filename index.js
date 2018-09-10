@@ -12,6 +12,18 @@ const readline = require('readline')
 const colors = require('colors')
 const CFonts = require('cfonts')
 
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
+process.stdin.on('keypress', (str, key) => {
+    if (key.name === 'q') {
+        process.exit();
+    }
+    else if (key.name === 's') {
+        console.log(colors.magenta("BOT STARTING ..."));
+        bot();
+    }
+});
+
 console.log(colors.green("__________________________________________________________________________________"))
 CFonts.say('LUCKY 13 bot', {
     font: 'simple',
