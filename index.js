@@ -41,14 +41,14 @@ console.log('')
 console.log(colors.yellow('Druk op de s toets om te beginnen. Druk op q om de bot te verlaten.'))
 
 function bot(){
-    screenshot("screenshot.png", {width: 1600}, function(error, complete) {
+    screenshot("screenshot.png", {width: 1440}, function(error, complete) {
         if(error)
             console.log("Screenshot failed", error);
         else
             console.log("Screenshot succeeded");
             gm('./screenshot.png')
             // Width, Height, X-offset, Y-offset
-            .crop(910, 420, 90, 800)
+            .crop(420, 185, 30, 400)
             .sepia()
             .write('./answerOne.png', function (err) {
             if (!err) 
@@ -64,7 +64,7 @@ function bot(){
             });
             gm('./screenshot.png')
             // Width, Height, X-offset, Y-offset
-            .crop(910, 420, 90, 1215)
+            .crop(420, 185, 30, 585)
             .sepia()
             .write('./answerTwo.png', function (err) {
             if (!err) 
@@ -80,7 +80,7 @@ function bot(){
             });
             gm('./screenshot.png')
             // Width, Height, X-offset, Y-offset
-            .crop(1300, 650, 0, 150)
+            .crop(480, 260, 0, 120)
             .sepia()
             .write('./question.png', function (err) {
             if (!err) 
@@ -104,11 +104,11 @@ function bot(){
                                             if (!error) {
                                                 const $ = cheerio.load(body);
                                                 if($('body').text().toLowerCase().indexOf(answerOne.toLowerCase()) != -1) {
-                                                    pointsAnswerOne = countInstances($('body').text().toLowerCase(), "dua lipa")
+                                                    pointsAnswerOne = countInstances($('body').text().toLowerCase(), "carmen")
                                                     console.log(pointsAnswerOne)
                                                 }
                                                 if($('body').text().toLowerCase().indexOf(answerTwo.toLowerCase()) != -1) {
-                                                    pointsAnswerTwo = countInstances($('body').text().toLowerCase(), "bebe rexha")
+                                                    pointsAnswerTwo = countInstances($('body').text().toLowerCase(), "don giovanni")
                                                     console.log(pointsAnswerTwo)
                                                 }
                                                 else {
