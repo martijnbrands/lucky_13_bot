@@ -1,7 +1,7 @@
 const screenshot = require('desktop-screenshot')
 
 const gm = require('gm')
-const nodecr = require('nodecr')
+const tesseract = require('node-tesseract');
 
 const request = require('request')
 const google = require('google')
@@ -34,7 +34,7 @@ function bot(){
             .write('./answerOne.jpg', function (err) {
             if (!err) 
                 console.log('Answer one cropping done');
-                nodecr.process(__dirname + '/answerOne.jpg',function(err, text) {
+                tesseract.process(__dirname + '/answerOne.jpg',function(err, text) {
                     if(err) {
                         console.error(err);
                     } else {
@@ -50,7 +50,7 @@ function bot(){
             .write('./answerTwo.jpg', function (err) {
             if (!err) 
                 console.log('Answer one cropping done');
-                nodecr.process(__dirname + '/answerTwo.jpg',function(err, text) {
+                tesseract.process(__dirname + '/answerTwo.jpg',function(err, text) {
                     if(err) {
                         console.error(err);
                     } else {
@@ -66,7 +66,7 @@ function bot(){
             .write('./question.jpg', function (err) {
             if (!err) 
                 console.log('Question cropping done');
-                nodecr.process(__dirname + '/question.jpg',function(err, text) {
+                tesseract.process(__dirname + '/question.jpg',function(err, text) {
                     if(err) {
                         console.error(err);
                     } else {

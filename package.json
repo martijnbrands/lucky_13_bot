@@ -11,6 +11,7 @@
     "fs-extra": "^7.0.0",
     "gm": "^1.23.1",
     "google": "^2.1.0",
+    "node-tesseract": "^0.2.7",
     "nodecr": "0.0.5",
     "request": "^2.88.0"
   },
