@@ -16,8 +16,11 @@ google.resultsPerPage = 25
 google.lang = 'nl'
 let nextCounter = 0
 
-pointsAnswerOne = ""
-pointsAnswerTwo = ""
+answerOne = ""
+answerTwo = ""
+
+pointsAnswerOne = 0
+pointsAnswerTwo = 0
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
@@ -48,7 +51,7 @@ function bot(){
             console.log("Screenshot succeeded");
             gm('./screenshot.png')
             // Width, Height, X-offset, Y-offset
-            .crop(420, 185, 30, 400)
+            .crop(390, 170, 30, 400)
             .sepia()
             .write('./answerOne.png', function (err) {
             if (!err) 
@@ -57,14 +60,14 @@ function bot(){
                     if(err) {
                         console.error(err);
                     } else {
-                        answerOne = text.replace(/^\s*$[\n\r]{1,}/gm, '');
+                        answerOne = text.replace(/^\s*$[\n\r]{1,}/gm, '').toLowerCase();
                         console.log(colors.yellow("Antwoord 1 = " + answerOne.underline.yellow + ""));
                     }
                 }, 'nld', 6);
             });
             gm('./screenshot.png')
             // Width, Height, X-offset, Y-offset
-            .crop(420, 185, 30, 585)
+            .crop(390, 170, 30, 570)
             .sepia()
             .write('./answerTwo.png', function (err) {
             if (!err) 
@@ -73,14 +76,14 @@ function bot(){
                     if(err) {
                         console.error(err);
                     } else {
-                        answerTwo = text.replace(/^\s*$[\n\r]{1,}/gm, '');
+                        answerTwo = text.replace(/^\s*$[\n\r]{1,}/gm, '').toLowerCase();
                         console.log(colors.yellow("Antwoord 2 = " + answerTwo.underline.yellow + ""));
                     }
                 }, 'nld', 6);
             });
             gm('./screenshot.png')
             // Width, Height, X-offset, Y-offset
-            .crop(480, 260, 0, 120)
+            .crop(445, 250, 0, 140)
             .sepia()
             .write('./question.png', function (err) {
             if (!err) 
@@ -104,20 +107,39 @@ function bot(){
                                             if (!error) {
                                                 const $ = cheerio.load(body);
                                                 if($('body').text().toLowerCase().indexOf(answerOne.toLowerCase()) != -1) {
-                                                    pointsAnswerOne = countInstances($('body').text().toLowerCase(), "carmen")
-                                                    console.log(pointsAnswerOne)
+                                                    pointsAnswerOne = countInstances($('body').text().toLowerCase(), answerOne)
                                                 }
                                                 if($('body').text().toLowerCase().indexOf(answerTwo.toLowerCase()) != -1) {
-                                                    pointsAnswerTwo = countInstances($('body').text().toLowerCase(), "don giovanni")
-                                                    console.log(pointsAnswerTwo)
+                                                    pointsAnswerTwo = countInstances($('body').text().toLowerCase(), answerTwo)
                                                 }
                                                 else {
                                                     console.log("Error: " + error);
                                                 }
                                             }
                                         });
-                                    }else{
                                     }
+                                    if(link.title.indexOf(answerOne.toLowerCase()) != -1) {
+                                        pointsAnswerOne = countInstances($('body').text().toLowerCase(), answerOne)
+                                        console.log(answerOne + " found!");
+                                    }
+                                    if(link.description.indexOf(answerOne.toLowerCase()) != -1) {
+                                        pointsAnswerOne = countInstances($('body').text().toLowerCase(), answerOne)
+                                        console.log(answerOne + " found!");
+                                    }
+                                    if(link.title.indexOf(answerTwo.toLowerCase()) != -1) {
+                                        pointsAnswerTwo = countInstances($('body').text().toLowerCase(), answerTwo)
+                                        console.log(answerTwo + " found!");
+                                    }
+                                    if(link.description.indexOf(answerTwo.toLowerCase()) != -1) {
+                                        pointsAnswerTwo = countInstances($('body').text().toLowerCase(), answerTwo)
+                                        console.log(answerTwo + " found!");
+                                    }
+                                }
+                                if(pointsAnswerOne > pointsAnswerTwo){
+                                    console.log(colors.green('Het juiste antwoord is "' + answerOne + '"'));
+                                }
+                                if(pointsAnswerTwo > pointsAnswerOne){
+                                    console.log(colors.green("Het juiste antwoord is '" + answerTwo  + "'"));
                                 }
                             }
                         
